@@ -20,17 +20,21 @@ import pickle
 import numpy as np
 import pandas as pd
 
-import scipy as sp
-import scipy.stats as stats
 
 import easydict
 
 
-
-import shap
+#시각화 모듈
+import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 from matplotlib import rc
+import seaborn as sns
 
+
+
+
+import scipy as sp
+import scipy.stats as stats
 import statsmodels.api as sm
 from statsmodels.formula.api import ols
 from statsmodels.stats.outliers_influence import variance_inflation_factor
@@ -39,19 +43,18 @@ from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
-
-import seaborn as sns
-import matplotlib.pyplot as plt
+from sklearn.metrics import roc_curve, accuracy_score, confusion_matrix, recall_score, precision_score,f1_score
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 
 
 import pandas as pd
 from datetime import datetime, date
 
-import seaborn as sns
 import numpy as np
-import statsmodels.api as sm
-import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
