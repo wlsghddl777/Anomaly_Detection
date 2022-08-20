@@ -91,14 +91,47 @@ from matplotlib import rc
 rc('font', family='AppleGothic')
 plt.rcParams['axes.unicode_minus'] = False
 
+# +
+# 그래프에 마이너스 표시가 되도록 변경
+matplotlib.rcParams['axes.unicode_minus'] = False
+pd.set_option('display.max_rows', 200)
 
-# -
 
+
+"""pickle 불러오는 함수"""
 def load_pickle(path):
     with open(path, 'rb') as f:
         obj = pickle.load(f)
     return obj
 
+"""리드 타임이 하루 이상 지났으면 제거"""
+def lead_none_delete(alrm_data):
+    alrm_data = alrm_data[alrm_data['ALRM_LEADTIME']<86400].reset_index(drop=True)
+    return alrm_data
+
+"""feature enginnering을 위한 병렬처리 함수"""
+def parallelize_dataframe(df, func, n_cores):
+    df_split = np.array_split(df, n_cores) # core의 개수만큼 df를 나눔
+    pool = Pool(n_cores) # pool을 core개수만큼 생성
+    df = pd.concat(pool.map(func, df_split)) # 나누어진 df를 func을 적용해서 수행 및 concat
+    pool.close()
+    pool.join() # 모두 완료될 때까지 대기
+    return df
+
+"""datetime 형식으로 컬럼 변경"""
+def transform_datetype(df, columns):
+    df[columns] = df[columns].astype('str')
+    df[columns] = pd.to_datetime(df[columns])
+    return df
+
+"""센서별 알람 구간"""
+def alrm_range(df):
+    ## 알람이 울린 구간을 tuple로 저장
+    range_list = list(df.apply(lambda x : tuple((x['ALRM_TMSTP'], x['END_TMSTP'])), axis=1))
+    return range_list
+
+
+# -
 
 # # 데이터 EDA
 
